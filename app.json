@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "AgroControl",
+    "slug": "agrocontrol",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#4a7c59"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.tuempresa.agrocontrol"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#4a7c59"
+      },
+      "package": "com.tuempresa.agrocontrol"
+    },
+    "plugins": [
+      "expo-secure-store"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "e95bfc1e-91c9-4283-b65a-7119abe4c6a2"
+      }
+    }
+  }
+}
