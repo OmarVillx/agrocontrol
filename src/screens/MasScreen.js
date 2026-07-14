@@ -37,9 +37,10 @@ export default function MasScreen({ navigation }) {
         </View>
 
         <Text style={s.sectionTitle}>Opciones</Text>
-        <MoreItem T={T} ico="🕐" bg={T.darkMode?'#1a2525':'#e6f0f0'} title="Historial Completo" sub="Ver todos los movimientos" onPress={() => navigation.navigate('Historial')} />
+        {esDueno && (
+          <MoreItem T={T} ico="🕐" bg={T.darkMode?'#1a2525':'#e6f0f0'} title="Historial Completo" sub="Ver todos los movimientos" onPress={() => navigation.navigate('Historial')} />
+        )}
         <MoreItem T={T} ico="🌿" bg={T.darkMode?'#1a2a1a':'#e6f5ea'} title="Registrar Uso de Insumo" sub="Vincular insumo a un campo" onPress={() => navigation.navigate('UseInsumo')} />
-
         {/* Solo dueño ve gestión de equipo */}
         {esDueno && (
           <MoreItem T={T} ico="👥" bg={T.darkMode?'#1a1a2e':'#e6eef8'} title="Gestionar Equipo" sub="Código de invitación y trabajadores" onPress={() => navigation.navigate('Equipo')} />

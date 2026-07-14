@@ -1,12 +1,14 @@
 // src/navigation/AppNavigator.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../ThemeContext';
 import { useAuth } from '../api';
 
+import OnboardingScreen             from '../screens/OnboardingScreen';
 import LoginScreen                  from '../screens/LoginScreen';
 import DashboardScreen              from '../screens/DashboardScreen';
 import CamposScreen                 from '../screens/CamposScreen';
@@ -46,9 +48,10 @@ function AlmacenStack() {
 function DashboardStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Dashboard" component={DashboardScreen} />
-      <Stack.Screen name="AddGasto"  component={AddGastoScreen} />
-      <Stack.Screen name="AddVenta"  component={AddVentaScreen} />
+      <Stack.Screen name="Dashboard"       component={DashboardScreen} />
+      <Stack.Screen name="AddGasto"        component={AddGastoScreen} />
+      <Stack.Screen name="AddVenta"        component={AddVentaScreen} />
+      <Stack.Screen name="UseInsumoDirecto" component={UseInsumoScreen} />
     </Stack.Navigator>
   );
 }
@@ -96,6 +99,18 @@ function MainTabs() {
 export default function AppNavigator() {
   const { user } = useAuth();
   const T = useTheme();
+  const [onboardingVisto, setOnboardingVisto] = useState(null); // null = cargando
+
+  useEffect(() => {
+    async function check() {
+      const visto = await AsyncStorage.getItem('onboarding_visto');
+      setOnboardingVisto(visto === 'true');
+    }
+    check();
+  }, []);
+
+  // Mientras carga el estado del onboarding no renderizar nada
+  if (onboardingVisto === null) return null;
 
   const navTheme = {
     ...(T.darkMode ? DarkTheme : DefaultTheme),
@@ -105,6 +120,14 @@ export default function AppNavigator() {
     },
   };
 
+  // Onboarding no visto → mostrar onboarding
+  if (!onboardingVisto) {
+    return (
+      <OnboardingScreen onFinish={() => setOnboardingVisto(true)} />
+    );
+  }
+
+  // Onboarding visto → flujo normal
   return (
     <NavigationContainer theme={navTheme}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>

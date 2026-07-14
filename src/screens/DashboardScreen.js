@@ -8,6 +8,7 @@ import { Header, QuickCard, AccessItem, LoadingOverlay } from '../components/UI'
 
 export default function DashboardScreen({ navigation }) {
   const { user } = useAuth();
+  const esDueno = user?.rol === 'dueno';
   const [camposCount,  setCamposCount]  = useState(0);
   const [insumosCount, setInsumosCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -34,8 +35,13 @@ export default function DashboardScreen({ navigation }) {
       <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
         <Text style={s.sectionLabel}>Acciones Rápidas</Text>
         <View style={s.quickGrid}>
-          <QuickCard icon="💸" label="Registrar Gasto"  bgColor="#fce8e6" onPress={() => navigation.navigate('AddGasto')} />
-          <QuickCard icon="🛒" label="Registrar Venta"  bgColor="#e6f5ea" onPress={() => navigation.navigate('AddVenta')} />
+          {esDueno && (
+            <QuickCard icon="💸" label="Registrar Gasto" bgColor="#fce8e6" onPress={() => navigation.navigate('AddGasto')} />
+          )}
+          {esDueno && (
+            <QuickCard icon="🛒" label="Registrar Venta" bgColor="#e6f5ea" onPress={() => navigation.navigate('AddVenta')} />
+          )}
+          <QuickCard icon="🌿" label="Registrar Uso de Insumo" bgColor="#e6f5ea" onPress={() => navigation.navigate('UseInsumoDirecto')} />
         </View>
 
         <Text style={s.sectionLabel}>Accesos Principales</Text>
